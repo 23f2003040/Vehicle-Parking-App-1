@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+  <header>
+    <nav id="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" >User Dashboard</a>
+          
+          <div class="d-flex">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+              <li class="nav-item">
+                <a class="nav-link active" href="#info">Info</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#find">Find</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#stats">Summary</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active " href="/login">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+  </header>
+  <main id="container">
+    <section id="info">
+        <div id="panel">
+            <h2 id="h2">Welcome {{info.name}}</h2>
+            {% if msg %}
+                  {% if msg==1 %}
+                  <div class="alert alert-danger d-flex align-items-center mt-4" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/><symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </symbol></svg>
+                    <div>
+                      {{message}}
+                    </div>
+                  </div>
+                  {% elif msg==2 %}
+                  <div class="alert alert-success d-flex align-items-center mt-4" role="alert">
+                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/><symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                  </symbol></svg>
+                  <div>
+                    {{message}}
+                  </div>
+                  </div>
+                  {% endif %}
+                {% endif %}
+            <div class="container1" >
+                <div class="left">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="../static/image/default.jfif" class="card-img-top" alt="image">
+                          <h5 class="card-title">{{info.name}}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">Address : {{info.address}}</li>
+                          <li class="list-group-item">Pincode : {{info.pincode}}</li>
+                          <li class="list-group-item">Phone no. : {{info.phone}}</li>
+                          <li class="list-group-item">E-mail : {{info.username}}</li>
+                        </ul>
+                      </div>
+                </div>
+                <div class="right">
+                  <h3>Recent Parking History:</h3>
+                  {%if info.reserve %}
+                  <table class="table bg-light" border="5">
+                    <thead>
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Lot Name</th>
+                        <th scope="col">Vehicle no.</th>
+                        <th scope="col">Parking time</th>
+                        <th scope="col">Leaving time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Cost</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {%for r in info.reserve%}
+                      <tr>
+                        <th scope="row">{{r.id}}</th>
+                        <td >{{r.spot.lot.name}}</td>
+                        <td>{{r.vehicle}}</td>
+                        <td>{{r.parking_timestamp}}</td>
+                        <td>{{r.leaving_timestamp}}</td>
+                        <td class="text-primary">{{r.status}}</td>
+                        <td>₹{{r.cost}}</td>
+                        {% if r.action == 1 %}
+                          <td><a href="#" type="button" id="release_button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#releaseSpot" data-val="{{r.id}}">Release</a></td>                        
+                        {% elif r.action == 2 %}
+                          <td><a href="#" type="button" id="payment_button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#payment" data-val="{{r.id}}#{{r.sid}}#{{r.vehicle}}#{{r.parking_timestamp}}#{{r.leaving_timestamp}}#{{r.spot.lot.price}}#{{r.cost}}">Pay bill</a></td>                        
+                        {% else %} <td>Paid</td> {% endif %}</td>
+                      </tr>
+                      {%endfor%}
+                    </tbody>
+                  </table>
+                  {%else%} <h5 class="text-center">No History</h5> {%endif%}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="find">
+      <div id="panel">
+          <div id="h2" class="row">
+              <div class="col"><h2>Search</h2></div>
+              <div class="col text-end"><a class="btn btn-primary" href="#nav">Back</a></div>  
+          </div>
+          <nav class="navbar navbar-light bg-light mb-4">
+              <div class="container-fluid">
+                <form class="d-flex" action="/search" method="post">
+                  <input type="number" name="role" value=1 hidden>
+                  <input type="number" name="search_by" value=1 hidden>
+                  <input type="number" name="id" value="{{info.id}}" hidden>
+                  <input class="form-control me-2" type="search" placeholder="Search" name="txt">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+              </div>
+            </nav>
+            {%if search_value%}
+            <table class="table bg-light" border="5">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Prime Location Name</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Price per hour</th>
+                  <th scope="col">Available Spots</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for l in search_value%}
+                <tr>
+                  <th scope="row">{{l.id}}</th>
+                  <td>{{l.name}}</td>
+                  <td>{{l.address}}</td>
+                  <td>₹{{l.price}}</td>
+                  <td>{{l.t_spots-l.o_spots}}</td>
+                  {%if (l.t_spots-l.o_spots) > 0 %}
+                    <td><a href="#" type="button" id="book_button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#bookSpot" data-val="{{l.available_spot.id}}#{{l.id}}#{{info.id}}">Book</a></td>
+                  {%else%}
+                    <td>Occupied</td>
+                  {%endif%}
+                {%endfor%}
+              </tbody>
+            </table>
+            {%else%}
+            <h5 class="text-center">No Results</h5>
+            {%endif%}
+      </div>
+  </section>
+    <section id="stats">
+        <div id="panel">
+            <div id="h2" class="row">
+                <div class="col"><h2>Statistics</h2></div>
+                <div class="col text-end"><a class="btn btn-primary" href="#nav">Back</a></div>  
+            </div>
+            <div class="p-5">
+              <img src="../static/{{info.id}}_time.png" alt="spot">
+            </div>
+        </div>
+    </section>
+
+    <!--Book Lots Modal-->
+    <form action="/book/{{info.id}}" method="POST">
+    <div class="modal fade" id="bookSpot" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Book Lot</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <label for="sid" class="form-label">Spot Id</label>
+            <input type="number" class="form-control" name="sid" id="sid" readonly>
+            <label for="lid" class="form-label">Lot Id</label>
+            <input type="number" class="form-control" name="lid" id="lid" readonly>
+            <label for="uid" class="form-label">User Id</label>
+            <input type="number" class="form-control" name="uid" id="uid" readonly>
+            <label for="vehicle" class="form-label">Vehicle no.</label>
+            <input type="text" class="form-control" name="vehicle" id="vehicle" oninput="this.value = this.value.toUpperCase();" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Reserve</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    <script>
+      $("#bookSpot").on("show.bs.modal", function(event){
+        var st=$(event.relatedTarget).data('val');
+        var values=st.split('#');
+        $(this).find('#sid').val(values[0]);
+        $(this).find('#lid').val(values[1]);
+        $(this).find('#uid').val(values[2]);
+        });
+    </script>
+
+<!--Release parking lot-->
+<form action="/release/{{info.id}}" method="POST">
+  <div class="modal fade" id="releaseSpot" data-bs-backdrop="static" tabindex="-1" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Release Spot</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="number" class="form-control" name="rid" id="rid" hidden>
+        Are you sure you want to release the spot?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="submit" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+<script>
+  $("#releaseSpot").on("show.bs.modal", function(event){
+    var rid =$(event.relatedTarget).data('val');
+    $(this).find('#rid').val(rid);
+  });
+</script>
+<!-------------Payment---------------------->
+<form action="/payment/{{info.id}}" method="POST">
+  <div class="modal fade" id="payment" tabindex="-1" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Pay Bill</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="number" class="form-control" name="rid" id="rid" hidden>
+          <label for="sid" class="form-label">Spot Id</label>
+          <input type="text" class="form-control" name="sid" id="sid" readonly>
+          <label for="vehicle" class="form-label">Vehicle No.</label>
+          <input type="text" class="form-control" name="vehicle" id="vehicle" readonly>
+          <label for="ptime" class="form-label">Parking time</label>
+          <input type="text" class="form-control" name="ptime" id="ptime" readonly> 
+          <label for="rtime" class="form-label">Releasing Time</label>
+          <input type="text" class="form-control" name="rtime" id="rtime" readonly >
+          <label for="price" class="form-label">Lot Price(per hour)</label>
+          <input type="text" class="form-control" name="price" id="price" readonly>
+          <label for="cost" class="form-label">Total Cost(in ₹)</label>
+          <input type="text" class="form-control" name="cost" id="cost" readonly>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Pay</button>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</form>
+<script>
+  $("#payment").on("show.bs.modal", function(event){
+    var st=$(event.relatedTarget).data('val');
+    var values=st.split('#');
+    $(this).find('#rid').val(values[0]);
+    $(this).find('#sid').val(values[1]);
+    $(this).find('#vehicle').val(values[2]);
+    $(this).find('#ptime').val(values[3]);
+    $(this).find('#rtime').val(values[4]);
+    $(this).find('#price').val(values[5]);
+    $(this).find('#cost').val(values[6]);
+  });
+</script>
+</main>
+
+</body>
+</html>
