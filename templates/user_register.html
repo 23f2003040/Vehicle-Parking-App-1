@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Register</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+  <div id="container">
+      <div id="panel">
+          <div id="input-form">
+          <h2 class="text-center mb-4">User Signup</h2>
+          <form action="/user_register" method="post">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email ID(Username)</label>
+              <input type="email" placeholder="e.g., name@example.com" class="form-control" name="uname" id="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="pwd" class="form-label">Password</label>
+              <input type="password" name="pwd" class="form-control" id="pwd" required>
+            </div>
+            <div class="mb-3">
+              <label for="fullname" class="form-label">Fullname</label>
+              <input type="text" name="fullname" class="form-control" id="fullname" required>
+            </div>
+            <div class="mb-3">
+              <label for="Address" class="form-label">Address</label>
+              <textarea type="text" name="address" class="form-control" id="address" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="pincode" class="form-label">Pincode</label>
+              <input type="number" maxlength="6" placeholder="Enter exactly 6 digits" name="pincode" class="form-control" id="pincode" required>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone No.</label>
+              <input type="number" maxlength="10" placeholder="Enter exactly 10 digits" name="phone" class="form-control" id="phone" required>
+            </div>
+             <button type="submit" class="btn btn-primary">Register</button>
+             <p class="text-end">Existing user? <a href="/login" class="btn btn-success">Login</a></p>             
+          </form>
+          {% if msg %}
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/><symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </symbol></svg>
+              <div>
+                Username Already Existed !!!
+              </div>
+            </div>
+          {% endif %}
+          </div>
+      </div>
+  </div>
+</body>
+</html>
