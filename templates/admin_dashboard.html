@@ -255,15 +255,65 @@
               <div class="card-body" class="d-flex">
                 {%for spot in l.spot%}
                   {%if spot.status=="Available"%}
-                  <a href="#" type="button" id="view_button" class="btn btn-success m-1" disabled>A</a>
-                  {%else%}
+                  <a href="#" type="button" id="view_button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#history{{spot.id}}">A</a>                  
+                    {%else%}
                     {%for r in spot.reserve %}
                       {%if r.action == 1%}
-                        <a href="#" type="button" id="view_button" class="btn btn-secondary m-1" data-bs-toggle="modal" data-bs-target="#viewSpot" data-val="{{spot.id}}#{{spot.status}}#{{r.uid}}#{{r.user.name}}#{{r.vehicle}}#{{r.parking_timestamp}}">O</a>
+                        <a href="#" type="button" id="view_button" class="btn btn-secondary m-1" data-bs-toggle="modal" data-bs-target="#history{{spot.id}}">O</a>
                       {%endif%} 
                     {%endfor%}
                   {%endif%}
-                {%endfor%}
+<!---------------------------------------------view spot history---------------------->                    
+                    <div class="modal fade" id="history{{spot.id}}" tabindex="-1" >
+                      <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Spot History</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body">
+                            {%if spot.reserve %}
+                            <table class="table bg-light mt-4" border="5">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Id</th>
+                                  <th scope="col">User Name</th>
+                                  <th scope="col">Vehicle no.</th>
+                                  <th scope="col">Parking time</th>
+                                  <th scope="col">Leaving time</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Cost</th>
+                                  <th scope="col">Payment</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {%for r in spot.reserve%}
+                                <tr>
+                                  <th scope="row">{{r.id}}</th>
+                                  <td >{{r.user.name}}</td>
+                                  <td>{{r.vehicle}}</td>
+                                  <td>{{r.parking_timestamp}}</td>
+                                  <td>{{r.leaving_timestamp}}</td>
+                                  <td class="text-primary">{{r.status}}</td>
+                                  <td>{{r.cost}}</td>
+                                  {% if r.action == 1 %}
+                                  <td></td>
+                                  {% elif r.action == 2 %}
+                                  <td class="text-danger">pending</td>
+                                  {% else %} <td class="text-success">Paid</td> {% endif %}
+                                </tr>
+                                {%endfor%}
+                              </tbody>
+                            </table>
+                            {%else%} <div class="text-center">No History</div> {%endif%}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>                
+                    {%endfor%}
               </div>
               
                 {%else%}
