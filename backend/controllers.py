@@ -256,17 +256,20 @@ def a(): #graph for Available and occupied parking spots
     occupied=len(ParkingSpots.query.filter_by(status="Occupied").all())
     available=len(ParkingSpots.query.filter_by(status="Available").all())
     total=len(ParkingSpots.query.all())
-    users=["Total Spots","Available","Occupied"]
+    spots=["Total Spots","Available","Occupied"]
     count=[total,available,occupied]
     plt.figure(figsize=(5, 5))
-    plt.bar(users,count, color=["skyblue","lightgreen","orange"])
+    plt.bar(spots,count, color=["skyblue","lightgreen","orange"])
     plt.xlabel('Parking Spots')
     plt.ylabel('Numbers')
     plt.title('Spots Status')
+    for i, value in enumerate(count):
+        plt.annotate((count[i]),(spots[i], count[i]))
     plt.tight_layout()
     plt.savefig("static/spot.png")
 
 def b(): # pie charts for revenues
+
     total=sum(r.cost for r in Reserves.query.filter_by(status="Parked Out").all())
     values=[] 
     labels=[]
@@ -276,10 +279,7 @@ def b(): # pie charts for revenues
         labels.append("Lot "+str(l.id))
         for s in l.spot:
             lot_revenue+=sum(r.cost for r in Reserves.query.filter_by(status="Parked Out", sid=s.id).all())
-            print(s,lot_revenue)
         values.append(lot_revenue)
-        print(lot_revenue)
-    print(values)
     plt.figure(figsize=(5, 5))
     plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=140)
     plt.title(f'Total Revenue: ₹{total:.2f}')
