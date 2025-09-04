@@ -67,7 +67,7 @@
         {%if lot%}
         <div id="a">
           {%for l in lot%}
-            <div class="card" style="width: max(23%, 260px);" id="b">
+            <div class="card " style="width: max(23%, 260px);" id="b">
               <div class="text-center">
                 <input type="hidden" name="lot_id" value="{{l.id}}">
                 <h5 class="card-title">{{l.name}}</h5>
@@ -97,7 +97,7 @@
           {%endfor%}
         </div>
         {%else%}
-        <div><h3>No Parking Lots are available!</h3></div>
+        <div><h3 style="color: white;">No Parking Lots are available!</h3></div>
         {%endif%}
         <div class="d-flex justify-content-md-center my-2">
           <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLot">Add Lot</button>
@@ -161,7 +161,6 @@
             </nav>
             {%if search_value%}
             {%if value==0%}
-            <h5>Users</h5>
             <table class="table bg-light" border="5">
               <thead>
                 <tr>
@@ -193,9 +192,8 @@
                             <h5 class="modal-title" id="exampleModalLabel">User History</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                           </div>
-                          <div class="modal-body">
                             {%if u.reserve %}
-                            <table class="table bg-light mt-4" border="5">
+                            <table class="table bg-light m-0">
                               <thead>
                                 <tr>
                                   <th scope="col">Id</th>
@@ -228,7 +226,7 @@
                               </tbody>
                             </table>
                             {%else%} <div class="text-center">No History</div> {%endif%}
-                          </div>
+
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                           </div>
@@ -324,7 +322,7 @@
         </div>
             {%endif%}
             {%else%}
-            <h5 class="text-center">No Results</h5>
+            <h5 style="color: white;" class="text-center">No Results</h5>
           {%endif%}
       </div>
   </section>
@@ -508,7 +506,11 @@
     $(this).find('#ptime').val(values[5]);
   });
 </script>
+  <footer>
+    <div style="color: white;" class="ms-4">
+      © Vedant Sahu. All rights reserved.
+    </div>
+  </footer>
   </main>
-  <footer></footer>
 </body>
 </html>

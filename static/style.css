@@ -5,6 +5,19 @@
 #container{
     border: 2px solid black;
     background-color: rgb(233, 235, 236);
+    background-image: url('image/bg_8.avif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#container-1{
+    border: 2px solid black;
+    background-color: rgb(233, 235, 236);
+    background-image: url('image/car_6.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 #panel{
@@ -19,6 +32,7 @@
     margin: auto;
     margin-top: 50px;
     margin-bottom: 50px;
+    margin-left: 60px;
     border-radius: 20px;
     padding:30px;
     border: 1px solid black;
@@ -29,10 +43,16 @@
     padding-top: 20px;
     width: 80vw;
     margin: auto;
+    color: white;
   }
 h3{
     padding: 20px;
     padding-bottom: 10px;
+    color: white;
+
+}
+h5:not #card-title{
+    color: white;
 }
 .container1{
     display: grid;
@@ -52,4 +72,13 @@ h3{
     margin: 10px;
     border: 2px solid black;
     padding-top: 10px;
+}
+.card,table,.modal-content,#input-form{
+    background-image: url('image/bg_10.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.modal-title{
+    margin-left: 40%;
 }
