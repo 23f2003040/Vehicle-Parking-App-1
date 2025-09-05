@@ -1,5 +1,6 @@
 from flask import Flask,render_template
 from backend.models import*
+import os
 
 app=None
 
@@ -16,4 +17,5 @@ app=init_app()
 from backend.controllers import *
 
 if __name__=="__main__":
-    app.run()
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
